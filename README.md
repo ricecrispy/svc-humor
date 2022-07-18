@@ -1,6 +1,16 @@
 # svc-humor
 
-# Build and start the app
+## Build and start the app locally
+```
+poetry shell
+
+poetry install
+
+poetry run uvicorn svc:app --reload
+
+```
+
+## Build and start the app in production
 ```
 docker build -t svc .
 
