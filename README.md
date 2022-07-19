@@ -14,6 +14,6 @@ poetry run uvicorn svc:app --reload
 ```
 docker build -t svc .
 
-docker run svc -d -p 8000:8000
+docker run -d -p 80:80 svc
 
 ```

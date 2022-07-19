@@ -1,19 +1,32 @@
-# download python 3.10 image
-FROM python:3.10-bullseye
-RUN apt-get update
-RUN apt-get install curl -y
+# 
+FROM python:3.10 as requirements-stage
 
-WORKDIR /app
+# 
+WORKDIR /tmp
 
-COPY poetry.lock poetry.lock
-COPY pyproject.toml pyproject.toml
-COPY svc.py svc.py
+# 
+RUN pip install poetry
 
-# Install poetry
-RUN pip install "poetry==1.1.14"
+# 
+COPY ./pyproject.toml ./poetry.lock* /tmp/
 
-# install project packages
-RUN poetry install --no-dev
+# 
+RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
 
-# start app
-CMD poetry run gunicorn -w 4 -k uvicorn.workers.UvicornWorker svc:app
+# 
+FROM python:3.10
+
+# 
+WORKDIR /code
+
+# 
+COPY --from=requirements-stage /tmp/requirements.txt /code/requirements.txt
+
+# 
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+
+# 
+COPY ./main.py /code/main.py
+
+# 
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]

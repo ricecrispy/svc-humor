@@ -30,7 +30,6 @@ def __create_mock_message(message: str):
     for ch in message:
         if ch.isalpha():
             random_num = random.random()
-            print(f'random_num: {random_num}. Bigger than 0.5? {random_num > 0.5}')
             result += ch.upper() if random_num > 0.5 else ch.lower()
         else:
             result += ch
