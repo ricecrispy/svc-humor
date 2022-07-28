@@ -1,5 +1,9 @@
 # svc-humor
 
+## Purpose
+
+A pet project to practice my python skills
+
 ## Build and start the app locally
 ```
 poetry shell
